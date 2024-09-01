@@ -37,7 +37,28 @@ jobs:
       - name: Install Hugo CLI
         run: |
           wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
-          && sudo dpkg -i ${{ runner.temp }}/hugo.deb                    
+          && sudo dpkg -i ${{ runner.temp }}/hugo.deb
+      # - name: Cache
+      #   uses: actions/cache@v4.0.2
+      #   with:
+      #     # A list of files, directories, and wildcard patterns to cache and restore
+      #     path:
+      #       - ${{ runner.temp }}/hugo.deb
+      #     # An explicit key for restoring and saving the cache
+      #     key:
+      #     # An ordered list of keys to use for restoring stale cache if no cache hit occurred for key. Note `cache-hit` returns false in this case.
+      #     restore-keys: # optional
+      #     # The chunk size used to split up large files during upload, in bytes
+      #     upload-chunk-size: # optional
+      #     # An optional boolean when enabled, allows windows runners to save or restore caches that can be restored or saved respectively on other platforms
+      #     enableCrossOsArchive: # optional, default is false
+      #     # Fail the workflow if cache entry is not found
+      #     fail-on-cache-miss: # optional, default is false
+      #     # Check if a cache entry exists for the given input(s) (key, restore-keys) without downloading the cache
+      #     lookup-only: # optional, default is false
+      #     # Run the post step to save the cache even if another step before fails
+      #     save-always: # optional, default is false
+
       - name: Install Dart Sass
         run: sudo snap install dart-sass
       - name: Checkout
@@ -59,7 +80,7 @@ jobs:
           hugo \
             --gc \
             --minify \
-            --baseURL "${{ steps.pages.outputs.base_url }}/"          
+            --baseURL "${{ steps.pages.outputs.base_url }}/"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
